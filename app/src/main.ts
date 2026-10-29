@@ -125,6 +125,14 @@ function setMode(next: 'orbit' | 'walk'): void {
 
 modeBtn?.addEventListener('click', () => setMode(walking ? 'orbit' : 'walk'));
 
+// 一键回到全景：点完图鉴之后不至于迷路
+const resetBtn = document.getElementById('reset-view') as HTMLButtonElement | null;
+resetBtn?.addEventListener('click', () => {
+  if (walking) setMode('orbit');
+  orbit.setPose(config.camera.eye, config.camera.target);
+  setStatus('全景', 'ok');
+});
+
 viewer.setCamera(camera);
 
 function resize(): void {

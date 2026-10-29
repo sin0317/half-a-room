@@ -20,7 +20,7 @@ const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 const norm = (v) => { const l = Math.hypot(v[0], v[1], v[2]); return [v[0] / l, v[1] / l, v[2] / l]; };
 
-function basis(eye, target, up = [0, -1, 0]) {
+function basis(eye, target, up = [0, 1, 0]) {
   const localZ = norm(sub(eye, target));
   const localX = norm(cross(up, localZ));
   const localY = cross(localZ, localX);
@@ -28,7 +28,7 @@ function basis(eye, target, up = [0, -1, 0]) {
 }
 
 /** 世界点 → 画布像素（px 从左、py 从上） */
-function project(eye, target, W, H, fovDeg, p, up = [0, -1, 0]) {
+function project(eye, target, W, H, fovDeg, p, up = [0, 1, 0]) {
   const { localX, localY, localZ } = basis(eye, target, up);
   const v = sub(p, eye);
   const xc = dot(v, localX);
@@ -41,7 +41,7 @@ function project(eye, target, W, H, fovDeg, p, up = [0, -1, 0]) {
 }
 
 /** 画布像素 → 世界方向 */
-function rayDir(eye, target, W, H, fovDeg, px, py, up = [0, -1, 0]) {
+function rayDir(eye, target, W, H, fovDeg, px, py, up = [0, 1, 0]) {
   const { localX, localY, localZ } = basis(eye, target, up);
   const tanH = Math.tan((fovDeg * Math.PI) / 180 / 2);
   const ndcX = (px / W) * 2 - 1;
@@ -55,7 +55,7 @@ function rayDir(eye, target, W, H, fovDeg, px, py, up = [0, -1, 0]) {
 }
 
 /** 画布像素 → 落在水平面 y=const 上的世界坐标 */
-function onPlane(eye, target, W, H, fovDeg, px, py, yPlane, up = [0, -1, 0]) {
+function onPlane(eye, target, W, H, fovDeg, px, py, yPlane, up = [0, 1, 0]) {
   const d = rayDir(eye, target, W, H, fovDeg, px, py, up);
   if (Math.abs(d[1]) < 1e-9) return null;
   const t = (yPlane - eye[1]) / d[1];

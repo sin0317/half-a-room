@@ -33,8 +33,8 @@ export const config = {
     near: 0.05,
     far: 2000,
     /** 初始机位。3DGS 资产是 -Y 朝上的 OpenCV 坐标系，见 orbit.ts 里的 up */
-    eye: [0.4, -0.2, 3.4] as [number, number, number],
-    target: [-1.2, -1.1, -2.2] as [number, number, number],
+    eye: [0.95, 0.42, 4.35] as [number, number, number],
+    target: [-1.4, -1.65, -1.95] as [number, number, number],
     minRadius: 0.2,
     maxRadius: 80,
   },
