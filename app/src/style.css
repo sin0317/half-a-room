@@ -1,0 +1,252 @@
+:root {
+  --ink: #e8e4dd;
+  --dim: #8a857d;
+  --line: rgba(232, 228, 221, 0.14);
+  --bg: #0b0b0c;
+  --ok: #8fbf9f;
+  --err: #c98a7a;
+  --accent: #c9a227;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  cursor: grab;
+}
+
+#stage:active {
+  cursor: grabbing;
+}
+
+#stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- HUD ---- */
+
+#hud {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 22px 26px 24px;
+  display: grid;
+  gap: 10px;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(11, 11, 12, 0.86), rgba(11, 11, 12, 0));
+}
+
+.hud__title {
+  font-size: 15px;
+  letter-spacing: 0.22em;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.hud__sub {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.hud__status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  color: var(--dim);
+}
+
+#status-text[data-state='ok'] {
+  color: var(--ok);
+}
+
+#status-text[data-state='error'] {
+  color: var(--err);
+}
+
+.hud__bar {
+  display: none;
+  width: 160px;
+  height: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.hud__bar i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--ink);
+  transition: width 0.15s linear;
+}
+
+.hud__hint {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+/* ---- 图鉴层 ---- */
+
+.catalog {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 272px;
+  padding: 24px 22px;
+  overflow-y: auto;
+  background: linear-gradient(to right, rgba(11, 11, 12, 0.9), rgba(11, 11, 12, 0.55));
+  border-right: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+}
+
+.catalog__head h2 {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  color: var(--ink);
+}
+
+.catalog__head p {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+}
+
+.catalog__count {
+  margin: 18px 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--dim);
+}
+
+.catalog__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.catalog__item {
+  display: block;
+  width: 100%;
+  padding: 11px 10px 11px 0;
+  text-align: left;
+  background: none;
+  border: none;
+  border-left: 1px solid transparent;
+  padding-left: 12px;
+  cursor: pointer;
+  color: inherit;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.catalog__item:hover {
+  border-left-color: var(--line);
+}
+
+.catalog__item.is-active {
+  border-left-color: var(--warm, #c98a3e);
+  background: rgba(232, 228, 221, 0.04);
+}
+
+.catalog__name {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.catalog__memory {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--dim);
+}
+
+@media (max-width: 720px) {
+  .catalog {
+    width: 200px;
+    padding: 16px 14px;
+  }
+}
+
+/* 出图模式：?chrome=0 隐藏图鉴与 HUD，只留纯渲染 */
+body.no-chrome #catalog,
+body.no-chrome #hud {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- 模式切换 ---- */
+
+.hud__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.hud__mode {
+  pointer-events: auto;
+  flex: none;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.hud__mode:hover {
+  border-color: var(--ink);
+  color: var(--accent);
+}
+
+body.is-walking .hud__mode {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 指针锁定时收起光标，只留十字准心 */
+body.is-locked #stage {
+  cursor: none;
+}
+
+body.is-walking #stage {
+  cursor: crosshair;
+}

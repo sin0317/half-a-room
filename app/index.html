@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>半间屋 · 场景</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230b0b0c'/><path d='M11 6v20M21 6v20M11 6h10' stroke='%23c98a3e' stroke-width='1.6' fill='none'/></svg>"
+    />
+  </head>
+  <body>
+    <!-- 3D 画布容器：Aholo Viewer 会把 canvas 插进来 -->
+    <div id="stage"></div>
+
+    <!-- 图鉴层：讲出来的那些东西 -->
+    <aside id="catalog" class="catalog" hidden></aside>
+
+    <div id="hud">
+      <div class="hud__title">半间屋<span class="hud__sub">Half a Room</span></div>
+      <div class="hud__status">
+        <span id="status-text">初始化</span>
+        <div id="progress" class="hud__bar"><i></i></div>
+      </div>
+      <div class="hud__foot">
+        <div class="hud__hint" id="hint-text">拖动旋转 · 滚轮推拉 · 按 P 复制当前机位</div>
+        <button class="hud__mode" id="mode-toggle" type="button">走进去 · F</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

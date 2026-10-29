@@ -1,0 +1,5 @@
+node_modules/
+*.log
+.verify/
+app/public/scenes/*.spz
+app/public/assets/*.glb
